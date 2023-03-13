@@ -12,6 +12,16 @@ import Manager from "@/Layout/Manager";
 
 const routes = [
   {
+    path: '/',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register
+  },
+  {
     path: '/user',
     name: 'user',
     component: User,
@@ -57,16 +67,6 @@ const routes = [
     path: '/test',
     name: 'test',
     component: Test
-  },
-    {
-    path: '/login',
-    name: 'login',
-    component: Login
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: Register
   },
 
 
