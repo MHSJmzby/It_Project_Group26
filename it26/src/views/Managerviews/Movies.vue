@@ -5,13 +5,13 @@
     <div style=" height: 50px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
       <div style=" width: 700px; padding-left: 10px; font-weight: bold; color: dodgerblue">
         <el-input v-model="search" placeholder="Please input Movie name"  style="width: 300px" clearable />
-        <el-button style="margin: 10px" >Search</el-button>
+        <el-button style="margin: 10px" @click="search">Search</el-button>
       </div>
       <div style="flex: 1"></div>
       <!--    Button   -->
-      <div style="width: 160px">
+      <div style="width: 60px">
         <el-button type="primary" @click="add">Add</el-button>
-        <el-button style="margin: 10px" type="danger" @click="Dialogdelete = true">Delete</el-button>
+<!--        <el-button style="margin: 10px" type="danger" @click="Dialogdelete = true"></el-button>-->
       </div>
     </div>
 
@@ -25,38 +25,36 @@
           :editable="true"
           ref="table"
           @cell-click="handleCellClick"
+          default-expand-all
       >
         <el-table-column type="index" align="center" />
         <el-table-column type="expand" >
           <template #default="props">
             <div m="4" style="padding: 10px;">
               <h3>Description</h3>
-              <p m="t-0 b-2">Movie: {{ props.row.name }}</p>
+              <p m="t-0 b-2">Movie: {{ props.row.movie }}</p>
               <p m="t-0 b-2">Actor: {{ props.row.actor }}</p>
               <p m="t-0 b-2">Introduction: {{ props.row.introduction }}</p>
             </div>
           </template>
         </el-table-column>
 
-        <el-table-column label="Movie" prop="movies" :editable="true" sortable>
+        <el-table-column label="Movie" prop="movie" :editable="true" sortable>
 <!--          <el-input v-model="inputValue" :value="tableData.name" placeholder="tableData.name"></el-input>-->
         </el-table-column>
         <el-table-column label="Release" prop="releaseDate" align="center" :editable="true" sortable/>
         <el-table-column label="Down" prop="downDate" align="center" :editable="true" sortable/>
         <el-table-column label="Duration" prop="duration" align="center" :editable="true"/>
+        <el-table-column label="Position" prop="position" align="center" :editable="true"/>
         <el-table-column label="Price" prop="price" align="center" :editable="true"/>
+        <el-table-column label="Operation" align="center" :editable="true">
+          <template #default="scope">
+            <el-button size="small" type="danger" @click="edit(scope.$index, scope.row)">Edit</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
-    <div>
-      <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Screen 1, 120, $39"
-          placement="right"
-      >
-        <el-button>Titanic</el-button>
-      </el-tooltip>
-    </div>
+
 <!--    Dialog   -->
     <div>
       <el-dialog
@@ -65,7 +63,7 @@
           width="50%"
           align-center
       >
-        <el-form :model="form" label-width="120px">
+        <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="Movie name">
             <el-input v-model="form.movie" />
           </el-form-item>
@@ -118,22 +116,6 @@
         </el-form>
       </el-dialog>
 
-      <el-dialog
-          v-model="Dialogdelete"
-          title="Tips"
-          width="30%"
-          align-center
-      >
-        <span>Do you confirm Delete?</span>
-        <template #footer>
-        <span class="dialog-footer">
-          <el-button type="primary" @click="Dialogdelete = false">
-            Confirm
-          </el-button>
-          <el-button @click="Dialogdelete = false">Cancel</el-button>
-        </span>
-        </template>
-      </el-dialog>
     </div>
   </div>
 </template>
@@ -155,6 +137,7 @@ export default {
       inputValue: '',
       pageSize: 1,
       currentPage: 4,
+      total: 0,
       Dialogadd: false,
       form: {
         duration: 120,
@@ -163,9 +146,9 @@ export default {
 
       tableData: [
         {
-          name: 'Titanic',
-          releasedate: '2022-05-03',
-          downdate: '2023-05-03',
+          movie: 'Titanic',
+          releaseDate: '2022-05-03',
+          downDate: '2023-05-03',
           duration: 120,
           actor: 'Jack',
           introduction: 'Romantic Movie',
@@ -174,9 +157,9 @@ export default {
           state: 'Unused',
         },
         {
-          name: 'Avatar2',
-          releasedate: '2022-05-02',
-          downdate: '2023-05-02',
+          movie: 'Avatar2',
+          releaseDate: '2022-05-02',
+          downDate: '2023-05-02',
           duration: 150,
           actor: 'Alsa',
           introduction: 'Good',
@@ -185,9 +168,9 @@ export default {
           state: 'Watching',
         },
         {
-          name: 'Spider man',
-          releasedate: '2022-05-04',
-          downdate: '2023-05-02',
+          movie: 'Spider man',
+          releaseDate: '2022-05-04',
+          downDate: '2023-05-02',
           duration: 120,
           actor: 'Simon',
           introduction: 'Cool',
@@ -197,9 +180,9 @@ export default {
         },
         {
 
-          name: 'Romantic',
-          releasedate: '2022-05-01',
-          downdate: '2023-05-02',
+          movie: 'Romantic',
+          releaseDate: '2022-05-01',
+          downDate: '2023-05-02',
           duration: 120,
           actor: 'Wendy',
           introduction: 'Love',
@@ -209,54 +192,80 @@ export default {
         },
       ]
     }
-
-
   },
-
+  created() {
+    this.load()
+  },
   methods: {
     load() {
-      request.get("/historyorder",{
+      request.get("/movies",{
         params: {
-          pageNum: this.currentPage,
-          pageSize: this.pageSize,
           search: this.search
         }
-
       }).then(res => {
         console.log(res)
-        this.tableData = res.data.record
+        //根据不同数据库中传输过来的属性，有的是record，有的是records，
+        // 可以在发出请求后，在前端后台查看
+        this.tableData = res.data.records
         this.total = res.data.total
       })
     },
 
     add() {
       this.Dialogadd = true
-      this.form = {
-
-      }
+      this.form = {}
     },
-
+    edit(row) {
+      this.form = JSON.parse(JSON.stringify(row))
+      this.Dialogadd = true
+    },
     save() {
-      // if(this.form.id) {
-      //   request.post("/movies", this.form).then(res => {
-      //     console.log(res)
-          // if (res.code ==='0') {
+      if(this.form.id) {  //Edit
+        request.put("/movies", this.form).then(res => {
+          console.log(res)
+          if (res.code ==='0') {
+            this.$message({
+              type:"success",
+              message: "Edit Successfully!"
+            })
+          }
+          else {
+            this.$message( {
+              type:"error",
+              message: res.msg,
+            })
+          }
+          this.load()   //刷新表格内容
+          this.Dialogadd = false
+        })
+      }
+      else {  //Add
+        request.post("/movies", this.form).then(res => {
+          console.log(res)
+          if (res.code ==='0') {
             this.$message({
               type:"success",
               message: "Add Successfully!"
             })
-          // }
-        // })
-      // }
+          }
+          else {
+            this.$message( {
+              type:"error",
+              message: res.msg,
+            })
+          }
+          this.load()   //刷新表格内容
+          this.Dialogadd = false
+        })
+      }
 
-      this.load()
-      this.Dialogadd = false
     },
-    handleCellClick(row, column, cell, event) {
-      this.$nextTick(() => {
-        this.$refs.table.editCell(row, column)
-      })
-    },
+
+    // handleCellClick(row, column, cell, event) {
+    //   this.$nextTick(() => {
+    //     this.$refs.table.editCell(row, column)
+    //   })
+    // },
 
 
   },

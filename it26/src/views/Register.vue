@@ -12,24 +12,25 @@
       <el-form
           :label-position="'top'"
           label-width="100px"
-          :model="ruleFormRef"
+          ref="form"
+          :model="form"
           style="margin-top: 50px; max-width: 460px;"
           :rules="rules"
       >
         <el-form-item label="Email">
-          <el-input v-model="ruleFormRef.email" />
+          <el-input v-model="form.email" />
         </el-form-item>
         <el-form-item label="Username">
-          <el-input v-model="ruleFormRef.name" />
+          <el-input v-model="form.name" />
         </el-form-item>
         <el-form-item label="Password">
-          <el-input v-model="ruleFormRef.password" />
+          <el-input v-model="form.password" />
         </el-form-item>
         <el-form-item label="Confirm Password">
-          <el-input v-model="ruleFormRef.confirm" />
+          <el-input v-model="form.confirm" />
         </el-form-item>
         <el-form-item style=" padding-left: 150px; padding-top: 10px">
-          <el-button color='black' @click="regist(ruleFormRef)">
+          <el-button color='black' @click="regist">
             Sign up
           </el-button>
         </el-form-item>
@@ -40,49 +41,61 @@
 
 <script>
 import router from "@/router";
+import request from "@/utils/request";
 
 export default {
   name: "Register",
   components: {},
   data() {
     return {
+      form: {},
       rules: {
+        email: [
+          {required: true, message: 'Please input Email', trigger: 'blur'},
+        ],
         name: [
-          { required: true, message: 'Please input Username', trigger: 'blur' },
+          {required: true, message: 'Please input Username', trigger: 'blur'},
         ],
         password: [
-          { required: true, message: 'Please input Password', trigger: 'blur' },
+          {required: true, message: 'Please input Password', trigger: 'blur'},
+        ],
+        confirm: [
+          {required: true, message: 'Please confirm Password', trigger: 'blur'},
         ],
       },
-      ruleFormRef: [
-        {
-          email: '',
-          name: '',
-          password: '',
-        }
-      ],
     }
   },
   methods: {
-    regist(ruleFormRef) {
-      // if(this.form.id) {
-      //   request.post("/movies", this.form).then(res => {
-      //     console.log(res)
-      // if (res.code ==='0') {
-      this.$message({
-        type:"success",
-        message: "Register Successfully!"
+    regist() {
+      if (this.form.password !== this.form.confirm) {
+        this.$message({
+          type: "error",
+          message: 'The 2 passwords entered are inconsistent!'
+        })
+        return
+      }
+
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          if (this.form.id) {
+            request.post("/register", this.form).then(res => {
+              console.log(res)
+              if (res.code === '0') {
+                this.$message({
+                  type: "success",
+                  message: "Register Successfully!"
+                })
+                router.push("/")
+              } else {
+                this.$message({
+                  type: "error",
+                  message: "res.msg"
+                })
+              }
+            })
+          }
+        }
       })
-      router.push("/user")
-      // }
-      // else {
-      //   this.$message({
-      //     type:"error",
-      //     message: "res.mss"
-      //   }
-      // })
-      // }
-      router.push("/login")
     }
   }
 }
