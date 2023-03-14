@@ -33,11 +33,11 @@
 
     <div style="margin: 10px 0; display: flex">
 <!--    Button   -->
-      <div style="flex: 1"></div>
-      <div>
-        <el-button type="primary" plain>Expand All list</el-button>
-        <el-button style="margin: 10px" type="primary" plain>Wrap up list</el-button>
-      </div>
+<!--      <div style="flex: 1"></div>-->
+<!--      <div>-->
+<!--        <el-button type="primary" plain>Expand All list</el-button>-->
+<!--        <el-button style="margin: 10px" type="primary" plain>Wrap up list</el-button>-->
+<!--      </div>-->
 
 <!--      Dialog   -->
       <el-dialog
@@ -76,40 +76,7 @@ export default {
       search: '',
       Dialogbook: false,
 
-      tableData:  [
-      {
-        date: '2022-05-03',
-        name: 'Titanic',
-        actor: 'Jack',
-        introduction: 'Romantic Movie',
-        position: 'Screen1',
-        price: 39,
-      },
-      {
-        date: '2022-05-02',
-        name: 'Avatar2',
-        actor: 'Alsa',
-        introduction: 'Good',
-        position: 'Screen2',
-        price: 39,
-      },
-      {
-        date: '2022-05-04',
-        name: 'Spider man',
-        actor: 'Simon',
-        introduction: 'Cool',
-        position: 'Screen3',
-        price: 59,
-      },
-      {
-        date: '2022-05-01',
-        name: 'Romantic',
-        actor: 'Wendy',
-        introduction: 'Love',
-        position: 'Screen2',
-        price: 39,
-      },
-    ]
+      tableData:  [],
     }
 
 
@@ -117,13 +84,10 @@ export default {
 
   methods: {
     load() {
-      request.get("/historyorder",{
+      request.get("/booking",{
         params: {
-          pageNum: this.currentPage,
-          pageSize: this.pageSize,
           search: this.search
         }
-
       }).then(res => {
         console.log(res)
         this.tableData = res.data.record
@@ -132,23 +96,23 @@ export default {
     },
     book()
     {
-      // if(this.form.id) {
-      //   request.post("/movies", this.form).then(res => {
-      //     console.log(res)
-      // if (res.code ==='0') {
-      this.$message({
-        type:"success",
-        message: "Booking Successfully!"
+      request.post("/booking", this.form).then(res => {
+        console.log(res)
+        if (res.code ==='0') {
+          this.$message({
+            type:"success",
+            message: "Booking Successfully!"
+          })
+        }
+        else {
+          this.$message( {
+            type:"error",
+            message: res.msg,
+          })
+        }
+        this.load()   //刷新表格内容
+        this.Dialogbook = false
       })
-      // }
-      // else {
-      //   this.$message({
-      //     type:"error",
-      //     message: "res.mss"
-      //   }
-      // })
-      // }
-      this.Dialogbook = false
     },
 
   }
