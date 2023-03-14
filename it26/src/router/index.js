@@ -6,7 +6,7 @@ import Movies from "@/views/Managerviews/Movies";
 import Login from "@/views/Login";
 import Register from "@/views/Register";
 import Booking from "@/views/Userviews/Booking";
-import Test from "@/views/Test";
+// import Test from "@/views/Test";
 import User from "@/Layout/User";
 import Manager from "@/Layout/Manager";
 
@@ -63,11 +63,11 @@ const routes = [
       },
     ]
   },
-    {
-    path: '/test',
-    name: 'test',
-    component: Test
-  },
+  //   {
+  //   path: '/test',
+  //   name: 'test',
+  //   component: Test
+  // },
 
 
 ]

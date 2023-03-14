@@ -33,8 +33,8 @@
         </el-form-item>
         <el-form-item style="margin-left: 100px">
           <el-radio-group v-model="form.state" class="ml-4" size="small">
-            <el-radio label="1" border @click="form.state = 0">User</el-radio>
-            <el-radio label="2" border @click="form.state = 1">Admin</el-radio>
+            <el-radio label="0" border >User</el-radio>
+            <el-radio label="1" border >Admin</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -59,24 +59,24 @@ export default {
   },
   data() {
     return {
-      radio: '1',
-      form: [
+      form: 
         {
-          state: 0,
+          state: '0',
         }
-      ],
+      ,
     }
   },
   methods: {
     login () {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          request.post("/", this.form).then(res => {
+          request.post("/login/", this.form).then(res => {
             if (res.code === '0') {
               this.$message({
                 type: "success",
                 message: "Login Successfully"
               })
+			  console.log(JSON.parse(res.data))
               sessionStorage.setItem("user", JSON.stringify(res.data))  // 缓存用户信息
 
               // 登录成功的时候更新当前路由

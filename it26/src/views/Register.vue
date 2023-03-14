@@ -77,8 +77,9 @@ export default {
 
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          if (this.form.id) {
-            request.post("/register", this.form).then(res => {
+			console.log(this.form)
+          // if (this.form.id) {
+            request.post("/register/", this.form).then(res => {
               console.log(res)
               if (res.code === '0') {
                 this.$message({
@@ -93,7 +94,7 @@ export default {
                 })
               }
             })
-          }
+          // }
         }
       })
     }

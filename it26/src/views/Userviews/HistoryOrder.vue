@@ -24,9 +24,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Movie" prop="name" sortable/>
-      <el-table-column label="Date" prop="date" align="center" sortable/>
-      <el-table-column label="Position" prop="position" align="center" />
+      <el-table-column label="Movie" prop="filmName" sortable/>
+      <el-table-column label="Date" prop="time" align="center" sortable/>
+      <el-table-column label="Position" prop="screen" align="center" />
       <el-table-column label="Price" prop="price" align="center"/>
       <el-table-column label="State" prop="state" align="center"/>
       <el-table-column label="Operations" align="center" >
@@ -137,7 +137,7 @@ export default {
 
   methods: {
     load() {
-      request.get("/historyorder",{
+      request.get("/historyorder/",{
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
@@ -146,7 +146,7 @@ export default {
 
       }).then(res => {
         console.log(res)
-        this.tableData = res.data.record
+        this.tableData = res.data
         this.total = res.data.total
       })
     },

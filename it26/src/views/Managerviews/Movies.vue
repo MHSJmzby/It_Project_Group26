@@ -39,17 +39,17 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="Movie" prop="movie" :editable="true" sortable>
+        <el-table-column label="Movie" prop="name" :editable="true" sortable>
 <!--          <el-input v-model="inputValue" :value="tableData.name" placeholder="tableData.name"></el-input>-->
         </el-table-column>
-        <el-table-column label="Release" prop="releaseDate" align="center" :editable="true" sortable/>
-        <el-table-column label="Down" prop="downDate" align="center" :editable="true" sortable/>
-        <el-table-column label="Duration" prop="duration" align="center" :editable="true"/>
-        <el-table-column label="Position" prop="position" align="center" :editable="true"/>
+        <el-table-column label="Release" prop="releaseTime" align="center" :editable="true" sortable/>
+        <el-table-column label="Down" prop="downTime" align="center" :editable="true" sortable/>
+        <el-table-column label="Duration" prop="timeLength" align="center" :editable="true"/>
+        <el-table-column label="Position" prop="screen" align="center" :editable="true"/>
         <el-table-column label="Price" prop="price" align="center" :editable="true"/>
         <el-table-column label="Operation" align="center" :editable="true">
           <template #default="scope">
-            <el-button size="small" type="danger" @click="edit(scope.$index, scope.row)">Edit</el-button>
+            <el-button size="small" type="danger" @click="edit(scope.row)">Edit</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -65,10 +65,10 @@
       >
         <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="Movie name">
-            <el-input v-model="form.movie" />
+            <el-input v-model="form.name" />
           </el-form-item>
           <el-form-item label="Position" >
-            <el-select v-model="form.position" placeholder="Please select the position" style="width: 180px">
+            <el-select v-model="form.screen" placeholder="Please select the position" style="width: 180px">
               <el-option label="Screen 1" value="1" />
               <el-option label="Screen 2" value="2" />
               <el-option label="Screen 3" value="3" />
@@ -77,7 +77,7 @@
           <el-form-item label="Date">
             <el-col :span="11">
               <el-date-picker
-                  v-model="form.releaseDate"
+                  v-model="form.releaseTime"
                   type="date"
                   placeholder="Pick a release date"
                   style="width: 100%"
@@ -88,7 +88,7 @@
             </el-col>
             <el-col :span="11">
               <el-date-picker
-                  v-model="form.downDate"
+                  v-model="form.downTime"
                   placeholder="Pick a down date"
                   style="width: 100%"
               />
@@ -98,7 +98,7 @@
             <el-switch v-model="form.state" />
           </el-form-item>
           <el-form-item label="Duration">
-            <el-input-number v-model="form.duration" :min="1" :max="300" :step="10"/>
+            <el-input-number v-model="form.timeLength" :min="1" :max="300" :step="10"/>
           </el-form-item>
           <el-form-item label="Price">
             <el-input-number v-model="form.price" :min="1" :max="200" />
@@ -140,7 +140,6 @@ export default {
       total: 0,
       Dialogadd: false,
       form: {
-        duration: 120,
       },
       Dialogdelete: false,
 
@@ -198,7 +197,7 @@ export default {
   },
   methods: {
     load() {
-      request.get("/movies",{
+      request.get("/movies/",{
         params: {
           search: this.search
         }
@@ -206,7 +205,7 @@ export default {
         console.log(res)
         //根据不同数据库中传输过来的属性，有的是record，有的是records，
         // 可以在发出请求后，在前端后台查看
-        this.tableData = res.data.records
+        this.tableData = res.data
         this.total = res.data.total
       })
     },
@@ -217,11 +216,12 @@ export default {
     },
     edit(row) {
       this.form = JSON.parse(JSON.stringify(row))
+	  console.log(this.form)
       this.Dialogadd = true
     },
     save() {
       if(this.form.id) {  //Edit
-        request.put("/movies", this.form).then(res => {
+        request.put("/movies/", this.form).then(res => {
           console.log(res)
           if (res.code ==='0') {
             this.$message({
@@ -240,7 +240,7 @@ export default {
         })
       }
       else {  //Add
-        request.post("/movies", this.form).then(res => {
+        request.post("/movies/", this.form).then(res => {
           console.log(res)
           if (res.code ==='0') {
             this.$message({
