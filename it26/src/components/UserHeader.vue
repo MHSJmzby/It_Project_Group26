@@ -10,7 +10,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="$router.push('/usercenter')">Personal Center</el-dropdown-item>
-            <el-dropdown-item divided @click="$router.push('/login')">Log out</el-dropdown-item>
+            <el-dropdown-item divided @click="$router.push('/')">Log out</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
