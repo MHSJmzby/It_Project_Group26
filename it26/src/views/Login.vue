@@ -14,12 +14,13 @@
           label-width="100px"
           ref="form"
           :model="form"
+          :rules="rules"
           style="margin-top: 50px; max-width: 460px;"
       >
-        <el-form-item label="Username">
-          <el-input v-model="form.name" />
+        <el-form-item label="Username" prop="username">
+          <el-input v-model="form.username" />
         </el-form-item>
-        <el-form-item label="Password">
+        <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" />
         </el-form-item>
         <el-form-item style=" padding-left: 150px; padding-top: 10px">
@@ -45,25 +46,22 @@
 <script>
 import router from "@/router";
 import request from "@/utils/request";
-
 export default {
   name: "Login",
   components: {},
-  rules: {
-    username: [
-      {required: true, message: '请输入用户名', trigger: 'blur'},
-    ],
-    password: [
-      {required: true, message: '请输入密码', trigger: 'blur'},
-    ],
-  },
   data() {
     return {
-      form: 
-        {
-          state: '0',
-        }
-      ,
+      form: {
+        state: '0',
+      },
+      rules: {
+        username: [
+          {required: true, message: 'Please input username', trigger: 'blur'},
+        ],
+        password: [
+          {required: true, message: 'Please inout password', trigger: 'blur'},
+        ],
+      },
     }
   },
   methods: {
@@ -76,9 +74,8 @@ export default {
                 type: "success",
                 message: "Login Successfully"
               })
-			  console.log(JSON.parse(res.data))
+              console.log(JSON.parse(res.data))
               sessionStorage.setItem("user", JSON.stringify(res.data))  // 缓存用户信息
-
               // 登录成功的时候更新当前路由
               // activeRouter()
               if (this.form.state == 0) {  //User
@@ -86,8 +83,6 @@ export default {
               } else {
                 router.push("/movies")  //Admin
               }
-
-
             } else {
               this.$message({
                 type: "error",
@@ -103,5 +98,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
