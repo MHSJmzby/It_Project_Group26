@@ -14,14 +14,14 @@ request.interceptors.request.use(config => {
 
     // config.headers['token'] = user.token;  // 设置请求头
     // 取出sessionStorage里面缓存的信息
-    // let userJson = sessionStorage.getItem("user")
-    // console.log(userJson)
-    // if(!userJson) {
-    //     router.push("/login")
-    // }
-    // else {
-    //     let user = JSON.parse(userJson);
-    // }
+    let userJson = sessionStorage.getItem("user")
+    console.log(userJson)
+    if(!userJson) {
+        router.push("/")
+    }
+    else {
+        let user = JSON.parse(userJson);
+    }
     return config
 }, error => {
     return Promise.reject(error)
