@@ -17,13 +17,13 @@
           style="margin-top: 50px; max-width: 460px;"
           :rules="rules"
       >
-        <el-form-item label="Email">
+        <el-form-item label="Email" prop="email">
           <el-input v-model="form.email" />
         </el-form-item>
-        <el-form-item label="Username">
-          <el-input v-model="form.name" />
+        <el-form-item label="Username" prop="username">
+          <el-input v-model="form.username" />
         </el-form-item>
-        <el-form-item label="Password">
+        <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" />
         </el-form-item>
         <el-form-item label="Confirm Password">
@@ -42,7 +42,6 @@
 <script>
 import router from "@/router";
 import request from "@/utils/request";
-
 export default {
   name: "Register",
   components: {},
@@ -53,14 +52,11 @@ export default {
         email: [
           {required: true, message: 'Please input Email', trigger: 'blur'},
         ],
-        name: [
+        username: [
           {required: true, message: 'Please input Username', trigger: 'blur'},
         ],
         password: [
           {required: true, message: 'Please input Password', trigger: 'blur'},
-        ],
-        confirm: [
-          {required: true, message: 'Please confirm Password', trigger: 'blur'},
         ],
       },
     }
@@ -74,27 +70,24 @@ export default {
         })
         return
       }
-
       this.$refs['form'].validate((valid) => {
         if (valid) {
-			console.log(this.form)
-          // if (this.form.id) {
-            request.post("/register/", this.form).then(res => {
-              console.log(res)
-              if (res.code === '0') {
-                this.$message({
-                  type: "success",
-                  message: "Register Successfully!"
-                })
-                router.push("/")
-              } else {
-                this.$message({
-                  type: "error",
-                  message: "res.msg"
-                })
-              }
-            })
-          // }
+          console.log(this.form)
+          request.post("/register/", this.form).then(res => {
+            console.log(res)
+            if (res.code === '0') {
+              this.$message({
+                type: "success",
+                message: "Register Successfully!"
+              })
+              router.push("/")
+            } else {
+              this.$message({
+                type: "error",
+                message: "res.msg"
+              })
+            }
+          })
         }
       })
     }
@@ -103,5 +96,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
