@@ -9,7 +9,7 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="$router.push('/login')">Log out</el-dropdown-item>
+            <el-dropdown-item @click="$router.push('/')">Log out</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
