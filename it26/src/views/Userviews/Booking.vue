@@ -76,7 +76,6 @@ export default {
       search: '',
       timing: '',
       Dialogbook: false,
-
       tableData:  [],
     }
 
@@ -92,7 +91,6 @@ export default {
         }
       }).then(res => {
         console.log(res)
-        this.timing = res.timing
         this.tableData = res.data
       })
     },
