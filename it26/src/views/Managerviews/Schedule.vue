@@ -1,51 +1,60 @@
 <template>
   <div style="padding: 10px; width: 100%">
     <div style="padding: 10px;">
-      <el-table :data="tableData " stripe :editable="true" @cell-click="handleCellClick">
-        <el-table-column label="Timing" prop="timing" style="color:black; font-weight: bolder" align="center" />
-        <el-table-column label="Monday" prop="monday"  align="center" :editable="true"/>
-        <el-table-column label="Tuesday" prop="tuesday" align="center" />
-        <el-table-column label="Wednesday" prop="wednesday" align="center" />
-        <el-table-column label="Thursday" prop="thursday" align="center"/>
-        <el-table-column label="Friday" prop="friday" align="center"/>
+      <el-table :data="tableData " stripe>
+        <el-table-column label="Timing" prop="timing" style="color:black; font-weight: bolder" align="center" >
+          <template v-slot="{ row }">
+          <el-input v-model="row.timing"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="Monday" prop="monday"  align="center">
+          <template v-slot="{ row }">
+            <el-input v-model="row.monday"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="Tuesday" prop="tuesday" align="center" >
+          <template v-slot="{ row }">
+            <el-input v-model="row.tuesday"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="Wednesday" prop="wednesday" align="center" >
+          <template v-slot="{ row }">
+            <el-input v-model="row.wednesday"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="Thursday" prop="thursday" align="center">
+          <template v-slot="{ row }">
+            <el-input v-model="row.thursday"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="Friday" prop="friday" align="center">
+          <template v-slot="{ row }">
+            <el-input v-model="row.friday"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="Saturday" prop="saturday" align="center">
+          <template v-slot="{ row }">
+            <el-input v-model="row.saturday"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="Sunday" align="center">
+          <template v-slot="{ row }">
+            <el-input v-model="row.sunday"></el-input>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
 
     <div style="display: flex">
       <div style="width: 700px; flex: 1"/>
-      <div style="width: 80px">
-        <el-button type="danger">Edit</el-button>
+      <div style="width: 140px">
+        <el-button type="primary" @click="load">Recover</el-button>
+        <el-popconfirm title="Do you confirm the Edit?" @confirm="edit">
+          <template #reference>
+            <el-button type="danger">Edit</el-button>
+          </template>
+        </el-popconfirm>
       </div>
-    </div>
-
-    <div>
-      <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="Screen 1, 120, $39"
-          placement="right"
-      >
-        <el-button>Titanic</el-button>
-      </el-tooltip>
-    </div>
-
-    <div>
-      <el-dialog
-          v-model="Dialogadd"
-          title="Tips"
-          width="30%"
-          align-center
-      >
-        <span>Do you confirm the refund?</span>
-        <template #footer>
-        <span class="dialog-footer">
-          <el-button type="primary" @click="Dialogrefund = false">
-            Confirm
-          </el-button>
-          <el-button @click="Dialogrefund = false">Cancel</el-button>
-        </span>
-        </template>
-      </el-dialog>
     </div>
   </div>
 </template>
@@ -78,26 +87,40 @@ export default {
       ]
     }
   },
-
+  created() {
+    this.load()
+  },
   methods: {
     load() {
-      request.get("/historyorder",{
+      request.get("/schedule/",{
         params: {
-          pageNum: this.currentPage,
-          pageSize: this.pageSize,
           search: this.search
         }
-
       }).then(res => {
         console.log(res)
-        this.tableData = res.data.record
+        this.tableData = res.data
         this.total = res.data.total
       })
     },
-    handleCellClick(row, column, cell, event) {
-      // 开始编辑单元格
-      this.$refs.table.editCell(row, column)
+    edit(){
+      request.put("/schedule/", this.tableData).then(res => {
+        console.log(res)
+        if (res.code ==='0') {
+          this.$message({
+            type:"success",
+            message: "Edit Successfully!"
+          })
+        }
+        else {
+          this.$message( {
+            type:"error",
+            message: res.msg,
+          })
+        }
+        this.load()   //刷新表格内容
+      })
     }
+
   },
 }
 </script>
