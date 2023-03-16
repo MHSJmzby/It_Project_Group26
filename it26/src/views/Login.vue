@@ -17,8 +17,8 @@
           :rules="rules"
           style="margin-top: 50px; max-width: 460px;"
       >
-        <el-form-item label="Username" prop="username">
-          <el-input v-model="form.username" />
+        <el-form-item label="Username" prop="name">
+          <el-input v-model="form.name" />
         </el-form-item>
         <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" />
@@ -55,7 +55,7 @@ export default {
         state: '0',
       },
       rules: {
-        username: [
+        name: [
           {required: true, message: 'Please input username', trigger: 'blur'},
         ],
         password: [
