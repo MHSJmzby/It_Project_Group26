@@ -1,30 +1,27 @@
 <template>
   <div style="padding: 10px; width: 100%">
     <!--    <span style="font-size: xx-large; font-weight: bold">History Order</span>-->
-<!--    Search   -->
+    <!--    Search   -->
     <div style=" height: 50px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex">
       <div style=" width: 700px; padding-left: 10px; font-weight: bold; color: dodgerblue">
         <el-input v-model="search" placeholder="Please input Movie name"  style="width: 300px" clearable />
-        <el-button style="margin: 10px" @click="search">Search</el-button>
+        <el-button style="margin: 10px" @click="load">Search</el-button>
       </div>
       <div style="flex: 1"></div>
       <!--    Button   -->
       <div style="width: 60px">
         <el-button type="primary" @click="add">Add</el-button>
-<!--        <el-button style="margin: 10px" type="danger" @click="Dialogdelete = true"></el-button>-->
+        <!--        <el-button style="margin: 10px" type="danger" @click="Dialogdelete = true"></el-button>-->
       </div>
     </div>
 
-<!--   Table   -->
+    <!--   Table   -->
     <div style="padding: 10px;">
       <el-table
           :data="tableData"
           highlight-current-row
           stripe
-
-          :editable="true"
           ref="table"
-          @cell-click="handleCellClick"
           default-expand-all
       >
         <el-table-column type="index" align="center" />
@@ -40,7 +37,7 @@
         </el-table-column>
 
         <el-table-column label="Movie" prop="name" :editable="true" sortable>
-<!--          <el-input v-model="inputValue" :value="tableData.name" placeholder="tableData.name"></el-input>-->
+          <!--          <el-input v-model="inputValue" :value="tableData.name" placeholder="tableData.name"></el-input>-->
         </el-table-column>
         <el-table-column label="Release" prop="releaseTime" align="center" :editable="true" sortable/>
         <el-table-column label="Down" prop="downTime" align="center" :editable="true" sortable/>
@@ -55,7 +52,7 @@
       </el-table>
     </div>
 
-<!--    Dialog   -->
+    <!--    Dialog   -->
     <div>
       <el-dialog
           v-model="Dialogadd"
@@ -121,15 +118,10 @@
 </template>
 
 <script>
-
-
 import request from "@/utils/request";
-
 export default {
   name: "Movies",
-
   components: {
-
   },
   data() {
     return {
@@ -142,54 +134,7 @@ export default {
       form: {
       },
       Dialogdelete: false,
-
-      tableData: [
-        {
-          movie: 'Titanic',
-          releaseDate: '2022-05-03',
-          downDate: '2023-05-03',
-          duration: 120,
-          actor: 'Jack',
-          introduction: 'Romantic Movie',
-          position: 'Screen1',
-          price: 39,
-          state: 'Unused',
-        },
-        {
-          movie: 'Avatar2',
-          releaseDate: '2022-05-02',
-          downDate: '2023-05-02',
-          duration: 150,
-          actor: 'Alsa',
-          introduction: 'Good',
-          position: 'Screen2',
-          price: 39,
-          state: 'Watching',
-        },
-        {
-          movie: 'Spider man',
-          releaseDate: '2022-05-04',
-          downDate: '2023-05-02',
-          duration: 120,
-          actor: 'Simon',
-          introduction: 'Cool',
-          position: 'Screen3',
-          price: 59,
-          state: 'Finish',
-        },
-        {
-
-          movie: 'Romantic',
-          releaseDate: '2022-05-01',
-          downDate: '2023-05-02',
-          duration: 120,
-          actor: 'Wendy',
-          introduction: 'Love',
-          position: 'Screen2',
-          price: 39,
-          state: 'Finish',
-        },
-      ]
+      tableData: []
     }
   },
   created() {
@@ -203,20 +148,17 @@ export default {
         }
       }).then(res => {
         console.log(res)
-        //根据不同数据库中传输过来的属性，有的是record，有的是records，
-        // 可以在发出请求后，在前端后台查看
         this.tableData = res.data
         this.total = res.data.total
       })
     },
-
     add() {
       this.Dialogadd = true
       this.form = {}
     },
     edit(row) {
       this.form = JSON.parse(JSON.stringify(row))
-	  console.log(this.form)
+      console.log(this.form)
       this.Dialogadd = true
     },
     save() {
@@ -258,20 +200,10 @@ export default {
           this.Dialogadd = false
         })
       }
-
     },
-
-    // handleCellClick(row, column, cell, event) {
-    //   this.$nextTick(() => {
-    //     this.$refs.table.editCell(row, column)
-    //   })
-    // },
-
-
   },
 }
 </script>
 
 <style scoped>
-
 </style>
