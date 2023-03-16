@@ -20,8 +20,8 @@
         <el-form-item label="Email" prop="email">
           <el-input v-model="form.email" />
         </el-form-item>
-        <el-form-item label="Username" prop="username">
-          <el-input v-model="form.username" />
+        <el-form-item label="Username" prop="name">
+          <el-input v-model="form.name" />
         </el-form-item>
         <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" />
@@ -52,7 +52,7 @@ export default {
         email: [
           {required: true, message: 'Please input Email', trigger: 'blur'},
         ],
-        username: [
+        name: [
           {required: true, message: 'Please input Username', trigger: 'blur'},
         ],
         password: [
