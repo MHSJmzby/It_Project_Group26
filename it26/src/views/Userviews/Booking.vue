@@ -6,7 +6,14 @@
       <el-button style="margin: 10px" plain>Search</el-button>
     </div>
 
-    <!--    Table   -->
+<!--    Table   -->
+    <div class="block">
+      <el-date-picker
+          v-model="timing"
+          type="date"
+          placeholder="Pick a day"
+      />
+    </div>
     <el-table :data="tableData" style="width: 100%; "  default-expand-all>
       <el-table-column type="index"  align="center"/>
       <el-table-column type="expand" style="width: 200px;" header-align="center" >
@@ -32,13 +39,6 @@
     </el-table>
 
     <div style="margin: 10px 0; display: flex">
-<!--    Button   -->
-<!--      <div style="flex: 1"></div>-->
-<!--      <div>-->
-<!--        <el-button type="primary" plain>Expand All list</el-button>-->
-<!--        <el-button style="margin: 10px" type="primary" plain>Wrap up list</el-button>-->
-<!--      </div>-->
-
 <!--      Dialog   -->
       <el-dialog
           v-model="Dialogbook"
@@ -74,6 +74,7 @@ export default {
   data() {
     return {
       search: '',
+      timing: '',
       Dialogbook: false,
 
       tableData:  [],
@@ -84,14 +85,14 @@ export default {
 
   methods: {
     load() {
-      request.get("/booking",{
+      request.get("/booking/",{
         params: {
           search: this.search
         }
       }).then(res => {
         console.log(res)
-        this.tableData = res.data.record
-        this.total = res.data.total
+        this.timing = res.timing
+        this.tableData = res.data
       })
     },
     book()
