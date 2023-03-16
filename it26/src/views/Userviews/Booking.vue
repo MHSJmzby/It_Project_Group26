@@ -3,7 +3,7 @@
 <!--  Search  -->
     <div>
       <el-input v-model="search" placeholder="Please input Movie name"  style="width: 300px" clearable />
-      <el-button style="margin: 10px" plain>Search</el-button>
+      <el-button style="margin: 10px" plain @click="load">Search</el-button>
     </div>
 
 <!--    Table   -->
@@ -13,6 +13,7 @@
           type="date"
           placeholder="Pick a day"
       />
+      <el-button style="margin: 10px" plain @click="load">Check</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%; "  default-expand-all>
       <el-table-column type="index"  align="center"/>
@@ -64,7 +65,6 @@
 
 <script>
 import request from "@/utils/request";
-import router from "@/router";
 
 export default {
   name: "Booking",
@@ -87,7 +87,8 @@ export default {
     load() {
       request.get("/booking/",{
         params: {
-          search: this.search
+          search: this.search,
+          timing: this.timing
         }
       }).then(res => {
         console.log(res)
