@@ -8,59 +8,53 @@
     </div>
 
 
-    <el-descriptions
-        title=""
-        direction="horizontal"
-        :column="1"
-        border
-        style="margin-top: 10px"
+    <el-card style="width: 40%; ">
+      <el-form ref="form" :model="form" label-width="80px">
+<!--        <el-form-item style="text-align: center" label-width="0">-->
+<!--          <el-upload-->
+<!--              class="avatar-uploader"-->
+<!--              :show-file-list="false"-->
+<!--          >-->
+<!--            <img v-if="form.avatar" :src="form.avatar" class="avatar">-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--          </el-upload>-->
+<!--        </el-form-item>-->
+        <el-form-item label="ID">
+          <el-input v-model="form.id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="Username">
+          <el-input v-model="form.username"></el-input>
+        </el-form-item>
+        <el-form-item label="Email">
+          <el-input v-model="form.email"></el-input>
+        </el-form-item>
+        <el-form-item label="Password">
+          <el-input v-model="form.password" show-password></el-input>
+        </el-form-item>
+      </el-form>
+      <div style="text-align: center">
+        <el-button type="primary" @click="Dialoguser=true">Save</el-button>
+      </div>
+    </el-card>
+  </div>
+
+  <div>
+    <el-dialog
+        v-model="Dialoguser"
+        title="Tips"
+        width="30%"
+        align-center
     >
-      <el-descriptions-item label="ID">vip123</el-descriptions-item>
-      <el-descriptions-item label="Username">Zoe</el-descriptions-item>
-      <el-descriptions-item label="Email">123@123.com</el-descriptions-item>
-<!--      <el-descriptions-item label="Remarks">-->
-<!--        <el-tag>VIP</el-tag>-->
-<!--      </el-descriptions-item>-->
-      <el-descriptions-item label="Address"
-      >No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
-      </el-descriptions-item>
-    </el-descriptions>
-    <div style="display: flex">
-      <div style="flex: 1"></div>
-      <div style="width: 80px">
-        <el-button style="margin-top: 10px; width: 80px" type="danger" @click="edit">Edit</el-button>
-      </div>
-
-      <div>
-        <el-dialog
-            v-model="Dialoguser"
-            title="User Information"
-            width="30%"
-            align-center
-        >
-          <el-form :model="form" label-width="80px" :label-position="'top'">
-            <el-form-item label="ID">
-              <el-input v-model="form.userid" disabled/>
-            </el-form-item>
-            <el-form-item label="Username">
-              <el-input v-model="form.name" />
-            </el-form-item>
-            <el-form-item label="Email" >
-              <el-input v-model="form.email" />
-            </el-form-item>
-            <el-form-item label="Address" >
-              <el-input v-model="form.address" type="textarea"/>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="save">Save</el-button>
-              <el-button @click="Dialoguser = false">Cancel</el-button>
-            </el-form-item>
-          </el-form>
-        </el-dialog>
-      </div>
-    </div>
-
-
+      <span>Do you confirm the Edit?</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="update">
+            Confirm
+          </el-button>
+          <el-button @click="Dialoguser = false">Cancel</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -118,42 +112,35 @@ export default {
 
 
   },
-
+  created() {
+    let str = sessionStorage.getItem("user") || "{}"
+    this.form = JSON.parse(str)
+  },
   methods: {
-    load() {
-      request.get("/historyorder",{
-        params: {
-          pageNum: this.currentPage,
-          pageSize: this.pageSize,
-          search: this.search
-        }
-
-      }).then(res => {
+    // handleAvatarSuccess(res) {
+    //   this.form.avatar = res.data
+    //   this.$message.success("上传成功")
+    //   // this.update()
+    // },
+    update() {
+      request.put("/usercenter", this.form).then(res => {
         console.log(res)
-        this.tableData = res.data.record
-        this.total = res.data.total
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "更新成功"
+          })
+          sessionStorage.setItem("user", JSON.stringify(this.form))
+          // 触发Layout更新用户信息
+          this.$emit("userInfo")
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
+        this.Dialoguser = false
       })
-    },
-    edit() {
-      this.Dialoguser = true
-      this.form = {
-
-      }
-    },
-    save() {
-      // if(this.form.id) {
-      //   request.post("/movies", this.form).then(res => {
-      //     console.log(res)
-      // if (res.code ==='0') {
-      this.$message({
-        type:"success",
-        message: "Edit Successfully!"
-      })
-      // }
-      // })
-      // }
-      this.load()
-      this.Dialoguser = false
     }
 
   }
