@@ -55,7 +55,7 @@ def movieEdit(request):
     record.price=info['price']
     record.actor=info['actor']
     record.introduction=info['introduction']
-    record.tate=info['state']
+    record.state=info['state']
     record.save()
     return JsonResponse({'code':'0'})
 

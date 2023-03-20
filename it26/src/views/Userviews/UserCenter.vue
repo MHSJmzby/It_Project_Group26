@@ -77,7 +77,7 @@ export default {
   },
   created() {
     let str = sessionStorage.getItem("user") || "{}"
-	console.log(JSON.parse(JSON.parse(str))[0]["fields"])
+	// console.log(JSON.parse(JSON.parse(str))[0]["fields"])
 	let temp=JSON.parse(JSON.parse(str))[0]["fields"]
 	temp["id"]=JSON.parse(JSON.parse(str))[0]["pk"]
     this.form = temp
@@ -96,7 +96,7 @@ export default {
             type: "success",
             message: "Update Successfully"
           })
-          sessionStorage.setItem("user", JSON.stringify(this.form))
+          sessionStorage.setItem("user", JSON.stringify(res.data))
           // 触发Layout更新用户信息
           this.$emit("userInfo")
         } else {
