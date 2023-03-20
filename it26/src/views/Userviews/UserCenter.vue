@@ -78,7 +78,10 @@ export default {
   },
   created() {
     let str = sessionStorage.getItem("user") || "{}"
-    this.form = JSON.parse(str)
+	console.log(JSON.parse(JSON.parse(str))[0]["fields"])
+	let temp=JSON.parse(JSON.parse(str))[0]["fields"]
+	temp["id"]=JSON.parse(JSON.parse(str))[0]["pk"]
+    this.form = temp
   },
   methods: {
     // handleAvatarSuccess(res) {
