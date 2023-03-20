@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from signupin.views import signup
 from signupin.views import signin
-from customer.views import historyorder
-from manager.views import dispatcher
+from customer.views import dispatcherHistoryOrder,dispatcherBooking
+from manager.views import dispatcherMovie,dispatcherschedule
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,9 +27,13 @@ urlpatterns = [
 
     path("login/", signin),
 
-    path("historyorder/",historyorder),
+    path("historyorder/",dispatcherHistoryOrder),
 
-    path("movies/",dispatcher)
+    path("movies/",dispatcherMovie),
+
+    path("booking/",dispatcherBooking),
+
+    path("schedule/",dispatcherschedule),
 
     # path('manager/', include('manager.urls')),
 ]

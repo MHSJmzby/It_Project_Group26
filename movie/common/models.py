@@ -18,17 +18,18 @@ class Film(models.Model):
     price=models.IntegerField()
     screen=models.IntegerField()
     introduction=models.CharField(max_length=100,blank=True,null=True)
-    actor=models.CharField(max_length=100,blank=100,null=True)
+    actor=models.CharField(max_length=100,blank=True,null=True)
+    state=models.IntegerField(blank=True, null= True)
 
 class ScheduleFilm(models.Model):
-    timing=models.DateTimeField()
-    monday=models.CharField(max_length=100,blank=100,null=True)
-    tuesday=models.CharField(max_length=100,blank=100,null=True)
-    wednesday=models.CharField(max_length=100,blank=100,null=True)
-    thursday=models.CharField(max_length=100,blank=100,null=True)
-    friday=models.CharField(max_length=100,blank=100,null=True)
-    saturday=models.CharField(max_length=100,blank=100,null=True)
-    sunday=models.CharField(max_length=100,blank=100,null=True)
+    timing=models.CharField(max_length=100,blank=True,null=True)
+    monday=models.CharField(max_length=100,blank=True,null=True)
+    tuesday=models.CharField(max_length=100,blank=True,null=True)
+    wednesday=models.CharField(max_length=100,blank=True,null=True)
+    thursday=models.CharField(max_length=100,blank=True,null=True)
+    friday=models.CharField(max_length=100,blank=True,null=True)
+    saturday=models.CharField(max_length=100,blank=True,null=True)
+    sunday=models.CharField(max_length=100,blank=True,null=True)
 
 
 class Order(models.Model):
@@ -37,3 +38,4 @@ class Order(models.Model):
     time=models.DateTimeField()
     price=models.IntegerField()
     screen = models.IntegerField()
+    state=models.IntegerField(blank=True,null=True)
