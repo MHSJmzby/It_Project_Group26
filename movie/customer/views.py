@@ -16,8 +16,6 @@ def dispatcherBooking(request):
 def dispatcherHistoryOrder(request):
     if request.method == 'GET':
         return historyorder(request)
-    elif request.method == 'DELETE':
-        return refund(request)
 
 # Create your views here.
 def historyorder(request):
@@ -32,6 +30,10 @@ def historyorder(request):
 
 
 def refund(request):
+    info = json.loads(request.body)
+    order=Order.objects.get(id=info['id'])
+    order.state=2
+    order.save()
     return JsonResponse({'code':'0'})
 
 
@@ -47,6 +49,6 @@ def booking(request):
 
 
 def book(request):
-    info = json.loads(request.body)
+
     print(info)
     return JsonResponse({'code':'0'})

@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from signupin.views import signup
 from signupin.views import signin
-from customer.views import dispatcherHistoryOrder,dispatcherBooking
+from customer.views import dispatcherHistoryOrder,dispatcherBooking,refund
 from manager.views import dispatcherMovie,dispatcherschedule
 
 urlpatterns = [
@@ -34,6 +34,8 @@ urlpatterns = [
     path("booking/",dispatcherBooking),
 
     path("schedule/",dispatcherschedule),
+
+    path("refund/",refund)
 
     # path('manager/', include('manager.urls')),
 ]
