@@ -72,42 +72,6 @@ export default {
       form: {
 
       },
-
-      tableData: [
-        {
-          date: '2022-05-03',
-          name: 'Titanic',
-          actor: 'Jack',
-          introduction: 'Romantic Movie',
-          position: 'Screen1',
-          price: 39,
-          state: 1,
-        },
-        {
-          date: '2022-05-02',
-          name: 'Avatar2',
-          actor: 'Alsa',
-          introduction: 'Good',
-          position: 'Screen2',
-          price: 39,
-        },
-        {
-          date: '2022-05-04',
-          name: 'Spider man',
-          actor: 'Simon',
-          introduction: 'Cool',
-          position: 'Screen3',
-          price: 59,
-        },
-        {
-          date: '2022-05-01',
-          name: 'Romantic',
-          actor: 'Wendy',
-          introduction: 'Love',
-          position: 'Screen2',
-          price: 39,
-        },
-      ]
     }
 
 
