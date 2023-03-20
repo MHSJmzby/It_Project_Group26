@@ -31,7 +31,7 @@
         <el-table-column label="State" prop="state" align="center"/>
         <el-table-column label="Operations" align="center" >
           <template #default="scope">
-            <el-button size="small" type="danger" @click="refund(scope.row.id)">Refund</el-button>
+            <el-button size="small" type="danger" @click="refund(scope.row)">Refund</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -110,31 +110,31 @@ export default {
         this.total = res.data.total
       })
     },
-    refund(id) {
+    refund(row) {
       this.Dialogrefund = true
-      console.log(id)
-      request.delete("/historyorder/" + id).then(res => {
-        console.log(id)
-        if(res.code === '0')
-        {
-          this.$message({
-            type: "success",
-            message: "Refund Successfully!"
-          })
-        }
-        else
-        {
-          this.$message({
-            type: "error",
-            message: res.msg,
-          })
-        }
-      })
+      this.form = JSON.parse(JSON.stringify(row))
+      console.log(this.form)
     },
     confirm()
     {
-      this.load()   //刷新表格内容
-      this.Dialogrefund = false
+      if(this.form.id) {  //Edit
+        request.post("/refund/", this.form).then(res => {
+          console.log(res)
+          if (res.code === '0') {
+            this.$message({
+              type: "success",
+              message: "Refund Successfully!"
+            })
+          } else {
+            this.$message({
+              type: "error",
+              message: res.msg,
+            })
+          }
+          this.load()   //刷新表格内容
+          this.Dialogrefund = false
+        })
+      }
     },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize
