@@ -19,16 +19,16 @@
 <!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
 <!--          </el-upload>-->
 <!--        </el-form-item>-->
-        <el-form-item label="ID">
+        <el-form-item label="ID" prop="id">
           <el-input v-model="form.id" disabled></el-input>
         </el-form-item>
-        <el-form-item label="Username">
+        <el-form-item label="Username" prop="name">
           <el-input v-model="form.username"></el-input>
         </el-form-item>
-        <el-form-item label="Email">
+        <el-form-item label="Email" prop="email">
           <el-input v-model="form.email"></el-input>
         </el-form-item>
-        <el-form-item label="Password">
+        <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" show-password></el-input>
         </el-form-item>
       </el-form>
@@ -69,9 +69,8 @@ export default {
   data() {
     return {
       Dialoguser: false,
-      form: {
+      form: {},
 
-      },
     }
 
 
@@ -90,12 +89,12 @@ export default {
     //   // this.update()
     // },
     update() {
-      request.put("/usercenter", this.form).then(res => {
+      request.put("/usercenter/", this.form).then(res => {
         console.log(res)
         if (res.code === '0') {
           this.$message({
             type: "success",
-            message: "更新成功"
+            message: "Update Successfully"
           })
           sessionStorage.setItem("user", JSON.stringify(this.form))
           // 触发Layout更新用户信息
