@@ -25,7 +25,7 @@ def signin(request):
     if(len(user)==0):
         return JsonResponse({
             'code':'1',
-            'msg':'fail to login'
+            'msg':'Login Failure'
         })
     user=serializers.serialize("json",user)
     return JsonResponse({'code':'0','data':user})
