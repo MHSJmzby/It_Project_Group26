@@ -34,7 +34,7 @@
       <el-table-column label="Price" prop="price" align="center"/>
       <el-table-column label="Operations" align="center">
         <template #default="scope">
-          <el-button size="small" type="primary" @click="book(scope.row)">Book</el-button>
+          <el-button size="small" type="primary" @click="book(scope.row.id)">Book</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -97,12 +97,13 @@ export default {
         this.tableData = res.data
       })
     },
-    book(row)
+    book(id)
     {
       this.Dialogbook = true
       const userJson = sessionStorage.getItem("user") || "{}";
-      const movieJson = JSON.stringify(row)
-      this.form = JSON.parse(JSON.stringify(userJson + movieJson));
+      let user=JSON.parse(JSON.parse(userJson))[0]["fields"]
+      user["id"]=JSON.parse(JSON.parse(userJson))[0]["pk"]
+      this.form = JSON.parse(JSON.stringify("User:" + user.id + " movie:" + id));
       console.log(this.form);
     },
     confirm()
