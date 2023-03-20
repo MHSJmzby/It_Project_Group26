@@ -29,8 +29,8 @@
       </el-table-column>
 
       <el-table-column label="Movie" prop="name"  align="center" sortable/>
-      <el-table-column label="Date" prop="date" align="center" sortable/>
-      <el-table-column label="Position" prop="position" align="center"/>
+      <el-table-column label="Date" prop="releaseTime" align="center" sortable/>
+      <el-table-column label="Position" prop="screen" align="center"/>
       <el-table-column label="Price" prop="price" align="center"/>
       <el-table-column label="Operations" align="center">
         <template #default="scope">
@@ -81,6 +81,9 @@ export default {
 
 
   },
+  created() {
+    this.load()
+  },
 
   methods: {
     load() {
@@ -95,8 +98,8 @@ export default {
       })
     },
     book()
-    {
-      request.post("/booking", this.form).then(res => {
+    {console.log(this.form)
+      request.post("/booking/", this.form).then(res => {
         console.log(res)
         if (res.code ==='0') {
           this.$message({
