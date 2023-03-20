@@ -1,12 +1,12 @@
 <template>
   <div style="width: 100%; padding: 10px; position: center">
-<!--  Search  -->
+    <!--  Search  -->
     <div>
       <el-input v-model="search" placeholder="Please input Movie name"  style="width: 300px" clearable />
       <el-button style="margin: 10px" plain @click="load">Search</el-button>
     </div>
 
-<!--    Table   -->
+    <!--    Table   -->
     <div class="block">
       <el-date-picker
           v-model="timing"
@@ -34,13 +34,13 @@
       <el-table-column label="Price" prop="price" align="center"/>
       <el-table-column label="Operations" align="center">
         <template #default="scope">
-          <el-button size="small" type="primary" @click="Dialogbook = true">Book</el-button>
+          <el-button size="small" type="primary" @click="book(scope.row)">Book</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <div style="margin: 10px 0; display: flex">
-<!--      Dialog   -->
+      <!--      Dialog   -->
       <el-dialog
           v-model="Dialogbook"
           title="Tips"
@@ -50,7 +50,7 @@
         <span>Do you confirm the booking?</span>
         <template #footer>
         <span class="dialog-footer">
-          <el-button type="primary" @click="book">
+          <el-button type="primary" @click="confirm">
             Confirm
           </el-button>
           <el-button @click="Dialogbook = false">Cancel</el-button>
@@ -97,8 +97,17 @@ export default {
         this.tableData = res.data
       })
     },
-    book()
-    {console.log(this.form)
+    book(row)
+    {
+      this.Dialogbook = true
+      const userJson = sessionStorage.getItem("user") || "{}";
+      const movieJson = JSON.stringify(row)
+      this.form = JSON.parse(JSON.stringify(userJson + movieJson));
+      console.log(this.form);
+    },
+    confirm()
+    {
+      console.log(this.form)
       request.post("/booking/", this.form).then(res => {
         console.log(res)
         if (res.code ==='0') {
@@ -116,7 +125,7 @@ export default {
         this.load()   //刷新表格内容
         this.Dialogbook = false
       })
-    },
+    }
 
   }
 }
