@@ -1,10 +1,12 @@
 import json
+import datetime
 
 from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render
 from common.models import Order, Film, User
 
+ISOT = '%Y-%m-%d %H:%M:%S'
 
 def dispatcherBooking(request):
     if request.method == 'GET':
@@ -50,7 +52,22 @@ def booking(request):
 
 def book(request):
     info = json.loads(request.body)
-    print(info)
+    #print(info)
+
+    user, movie = info.split(' ')
+    str, userId = user.split(':')
+    str, movieId = movie.split(':')
+    # print(userId, movieId)
+
+    film = Film.objects.get(id=movieId)
+    record = Order.objects.create(
+        userId=int(userId),
+        filmName=film.name,
+        time=datetime.datetime.now().strftime(ISOT),
+        price=film.price,
+        screen=film.screen,
+        state=1,
+    )
     return JsonResponse({'code':'0'})
 
 
