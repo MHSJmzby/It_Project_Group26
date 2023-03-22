@@ -17,7 +17,7 @@
           <template #default="props">
             <div m="4" style="padding: 10px;">
               <h3>Description</h3>
-              <p m="t-0 b-2">Movie: {{ props.row.name }}</p>
+              <p m="t-0 b-2">Movie: {{ props.row.filmName }}</p>
               <p m="t-0 b-2">Actor: {{ props.row.actor }}</p>
               <p m="t-0 b-2">Introduction: {{ props.row.introduction }}</p>
             </div>
