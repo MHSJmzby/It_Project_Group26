@@ -20,11 +20,13 @@ def dispatcherHistoryOrder(request):
 # Create your views here.
 def historyorder(request):
     name=request.GET['search']
+    userid=request.GET['userId']
     if(len(name)==0):
         orders=Order.objects.values()
         orders = list(orders)
     else:
-        orders=Order.objects.filter(filmName=name)
+        orders=Order.objects.filter(filmName=name,userId=userid)
+        orders = list(orders)
         orders = serializers.serialize('json', orders)
     return JsonResponse({'code':'0','data':orders})
 

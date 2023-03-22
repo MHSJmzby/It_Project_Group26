@@ -97,15 +97,17 @@ export default {
 
   methods: {
     load() {
+		let str = sessionStorage.getItem("user") || "{}"
       request.get("/historyorder/", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
-          search: this.search
+          search: this.search,
+		  userId:JSON.parse(JSON.parse(str))[0]["pk"]
         }
 
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.tableData = res.data
         this.total = res.data.total
       })
