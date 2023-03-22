@@ -6,7 +6,7 @@
     <div style="display: flex">
       <div style="width: 600px;">
         <el-input v-model="search" placeholder="Please input Movie name"  style="width: 300px" clearable />
-        <el-button style="margin: 10px" plain>Search</el-button>
+        <el-button style="margin: 10px" plain @click="load">Search</el-button>
       </div>
     </div>
 
@@ -17,7 +17,7 @@
           <template #default="props">
             <div m="4" style="padding: 10px;">
               <h3>Description</h3>
-              <p m="t-0 b-2">Movie: {{ props.row.name }}</p>
+              <p m="t-0 b-2">Movie: {{ props.row.filmName }}</p>
               <p m="t-0 b-2">Actor: {{ props.row.actor }}</p>
               <p m="t-0 b-2">Introduction: {{ props.row.introduction }}</p>
             </div>
@@ -103,16 +103,16 @@ export default {
           pageSize: this.pageSize,
           search: this.search
         }
-
       }).then(res => {
         console.log(res)
         this.tableData = res.data
         this.total = res.data.total
       })
     },
-    refund(row) {
+    refund(id) {
       this.Dialogrefund = true
-      this.form = JSON.parse(JSON.stringify(row))
+      const delJson = JSON.parse(JSON.stringify(id))
+      this.form = delJson
       console.log(this.form)
     },
     confirm()

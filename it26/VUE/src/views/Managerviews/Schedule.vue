@@ -47,11 +47,11 @@
 
     <div style="display: flex">
       <div style="width: 700px; flex: 1"/>
-      <div style="width: 140px">
+      <div style="width: 150px">
         <el-button type="primary" @click="load">Recover</el-button>
         <el-popconfirm title="Do you confirm the Edit?" @confirm="edit">
           <template #reference>
-            <el-button type="danger">Edit</el-button>
+            <el-button type="danger">Save</el-button>
           </template>
         </el-popconfirm>
       </div>

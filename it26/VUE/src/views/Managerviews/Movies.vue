@@ -29,14 +29,14 @@
           <template #default="props">
             <div m="4" style="padding: 10px;">
               <h3>Description</h3>
-              <p m="t-0 b-2">Movie: {{ props.row.movie }}</p>
+              <p m="t-0 b-2">Movie: {{ props.row.name }}</p>
               <p m="t-0 b-2">Actor: {{ props.row.actor }}</p>
               <p m="t-0 b-2">Introduction: {{ props.row.introduction }}</p>
             </div>
           </template>
         </el-table-column>
 
-        <el-table-column label="Movie" prop="name" :editable="true" sortable>
+        <el-table-column label="Movie" prop="name" sortable>
           <!--          <el-input v-model="inputValue" :value="tableData.name" placeholder="tableData.name"></el-input>-->
         </el-table-column>
         <el-table-column label="Release" prop="releaseTime" align="center" :editable="true" sortable/>
@@ -149,7 +149,6 @@ export default {
       }).then(res => {
         console.log(res)
         this.tableData = res.data
-        this.total = res.data.total
       })
     },
     add() {

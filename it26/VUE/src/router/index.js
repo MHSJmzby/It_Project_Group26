@@ -69,6 +69,11 @@ const routes = [
       },
     ]
   },
+    {
+    path: '/test',
+    name: 'test',
+    component: Test
+  },
 
 
 ]

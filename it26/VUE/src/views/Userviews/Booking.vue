@@ -80,7 +80,6 @@ export default {
       form: {}
     }
 
-
   },
   created() {
     this.load()
@@ -95,6 +94,12 @@ export default {
         }
       }).then(res => {
         console.log(res)
+        // const tableJson = res.data
+        // console.log(tableJson)
+        // let table = tableJson["fields"]
+        // // table["name"] = JSON.parse(JSON.stringify(tableJson))[0]["pk"]
+        // console.log(JSON.parse(JSON.stringify(table)))
+        // this.tableData = table
         this.tableData = res.data
       })
     },
@@ -104,8 +109,9 @@ export default {
       const userJson = sessionStorage.getItem("user") || "{}";
       let user=JSON.parse(JSON.parse(userJson))[0]["fields"]
       user["id"]=JSON.parse(JSON.parse(userJson))[0]["pk"]
+      // user["id"]=userJson[0]["pk"]
       this.form.userid = JSON.parse(JSON.stringify(user.id ));
-      this.form.movieid = JSON.parse(JSON.stringify(id))
+      this.form.movieid = id
       console.log(this.form);
     },
     confirm()
