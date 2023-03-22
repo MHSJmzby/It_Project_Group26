@@ -55,7 +55,7 @@ export default {
         {
           name: 'Movie Pie',
           type: 'pie',
-          radius: [50, 200],
+          radius: [50, 150],
           center: ['50%', '50%'],
           roseType: 'area',
           itemStyle: {
