@@ -6,9 +6,10 @@ import Movies from "@/views/Managerviews/Movies";
 import Login from "@/views/Login";
 import Register from "@/views/Register";
 import Booking from "@/views/Userviews/Booking";
-// import Test from "@/views/Test";
+import Test from "@/views/Test";
 import User from "@/Layout/User";
 import Manager from "@/Layout/Manager";
+import DataAnalysis from "@/views/Managerviews/DataAnalysis";
 
 const routes = [
   {
@@ -61,13 +62,13 @@ const routes = [
         name: 'movies',
         component: Movies
       },
+      {
+        path: '/dataAnalysis',
+        name: 'dataAnalysis',
+        component: DataAnalysis
+      },
     ]
   },
-  //   {
-  //   path: '/test',
-  //   name: 'test',
-  //   component: Test
-  // },
 
 
 ]

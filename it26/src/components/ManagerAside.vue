@@ -12,6 +12,9 @@
       <el-menu-item index="schedule" style="padding-left: 25px">
         <span>Schedule Management</span>
       </el-menu-item>
+      <el-menu-item index="dataAnalysis" style="padding-left: 50px">
+        <span>Data Analysis</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
