@@ -65,31 +65,52 @@ export default {
 
   },
   created() {
-    let str = sessionStorage.getItem("user") || "{}"
-    console.log(JSON.parse(JSON.parse(str))[0]["fields"])
-    let temp=JSON.parse(JSON.parse(str))[0]["fields"]
-    temp["id"]=JSON.parse(JSON.parse(str))[0]["pk"]
-    this.form = temp
+    this.load()
   },
   methods: {
+    load() {
+      let str = sessionStorage.getItem("user") || "{}"
+      // console.log(JSON.parse(JSON.parse(str))[0]["fields"])
+      let temp=JSON.parse(JSON.parse(str))[0]["fields"]
+      console.log(temp)
+      temp["id"]=JSON.parse(JSON.parse(str))[0]["pk"]
+      this.form = temp
+      console.log(temp)
+    },
     update() {
       request.put("/usercenter/", this.form).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.code === '0') {
           this.$message({
             type: "success",
             message: "Update Successfully"
           })
+          // let str1 = sessionStorage.getItem("user")
+          // let str1Json = JSON.parse(str1)
           sessionStorage.setItem("user", JSON.stringify(this.form))
+          // let str2Json = JSON.parse(res.data) //sessionStorage.getItem("user")
+          // //let str2Json = JSON.parse(str2)
+          //
+          // console.log(str1Json)
+          // console.log(str2Json)
+          // this.form = str2Json.data
+          // sessionStorage.setItem("user", JSON.stringify(str1Json.data))
+          //console.log(str2)
+          // console.log(res)
           // 触发Layout更新用户信息
-          this.$emit("userInfo")
+          this.$store.commit("setUserInfo", JSON.parse(sessionStorage.getItem("user")))
+          // this.$emit("userInfo")
         } else {
           this.$message({
             type: "error",
             message: res.msg
           })
         }
+        // let str = sessionStorage.getItem("user") || "{}"
+        // console.log(str)
+        // this.form = str
         this.Dialoguser = false
+        // this.load()
       })
     }
 

@@ -85,8 +85,4 @@ export default {
   height: 300px;
   border: 1px solid red;
 }
-<<<<<<< HEAD:it26/VUE/src/views/Managerviews/DataAnalysis.vue
 </style>
-=======
-</style>
->>>>>>> 11fd5f519d2dbb341095d1288c5071891fa9245a:it26/src/views/Managerviews/DataAnalysis.vue

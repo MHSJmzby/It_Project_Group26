@@ -103,18 +103,21 @@ export default {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
           search: this.search,
-          // userId: JSON.parse(JSON.parse(str))[0]["pk"]
+          // userId:JSON.parse(JSON.parse(str))[0]["pk"]
         }
       }).then(res => {
-        // console.log(res)
-        // this.tableData.id = JSON.parse(JSON.parse(str))[0]["pk"]
+        // console.log(res.data.userId)
         this.tableData = res.data
         this.total = res.data.total
       })
     },
     refund(id) {
       this.Dialogrefund = true
-      const delJson = JSON.parse(JSON.stringify(id))
+      let str = sessionStorage.getItem("user") || "{}"
+      // const userJson = JSON.parse(JSON.parse(str))[0]["pk"]
+      // const delJson = JSON.parse(JSON.stringify(id))
+      // this.form.orderid = delJson
+      // this.form.userid = userJson
       this.form = delJson
       console.log(this.form)
     },
