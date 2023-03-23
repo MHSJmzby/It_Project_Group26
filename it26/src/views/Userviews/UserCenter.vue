@@ -1,4 +1,5 @@
 <template>
+<div>
   <div style="width: 100%; padding: 10px; position: center">
 <!--    Personal Information-->
     <div style="margin: 10px" class="demo-basic--circle">
@@ -22,33 +23,47 @@
         </el-form-item>
       </el-form>
       <div style="text-align: center">
-        <el-button type="primary" @click="Dialoguser=true">Save</el-button>
+        <el-button type="primary" @click="outerVisible=true">Save</el-button>
       </div>
     </el-card>
   </div>
 
   <div>
-    <el-dialog
-        v-model="Dialoguser"
-        title="Tips"
-        width="30%"
-        align-center
-    >
-      <span>Do you confirm the Edit?</span>
+    <el-dialog v-model="outerVisible" title="Tips" width="30%">
+    <span>
+      If you change your information, you will need to log in again.
+      Do you confirm the Edit?
+    </span>
       <template #footer>
-        <span class="dialog-footer">
-          <el-button type="primary" @click="update">
-            Confirm
-          </el-button>
-          <el-button @click="Dialoguser = false">Cancel</el-button>
-        </span>
+      <span class="dialog-footer">
+        <el-button @click="outerVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="innerVisible = true">
+          Confirm
+        </el-button>
+      </span>
+      </template>
+    </el-dialog>
+    <el-dialog
+          v-model="innerVisible"
+          width="30%"
+          title="Warning"
+          append-to-body
+      >
+      <span>Are you sure to log out?</span>
+      <template #footer>
+      <el-button @click="cancel">Cancel</el-button>
+      <el-button type="primary" @click="update">
+        Log out
+      </el-button>
       </template>
     </el-dialog>
   </div>
+</div>
 </template>
 
 <script>
 import request from "@/utils/request";
+import router from "@/router";
 
 export default {
   name: "UserCenter",
@@ -57,7 +72,8 @@ export default {
   },
   data() {
     return {
-      Dialoguser: false,
+      outerVisible: false,
+      innerVisible: false,
       form: {},
 
     }
@@ -85,33 +101,22 @@ export default {
             type: "success",
             message: "Update Successfully"
           })
-          // let str1 = sessionStorage.getItem("user")
-          // let str1Json = JSON.parse(str1)
+
           sessionStorage.setItem("user", JSON.stringify(this.form))
-          // let str2Json = JSON.parse(res.data) //sessionStorage.getItem("user")
-          // //let str2Json = JSON.parse(str2)
-          //
-          // console.log(str1Json)
-          // console.log(str2Json)
-          // this.form = str2Json.data
-          // sessionStorage.setItem("user", JSON.stringify(str1Json.data))
-          //console.log(str2)
-          // console.log(res)
           // 触发Layout更新用户信息
-          this.$store.commit("setUserInfo", JSON.parse(sessionStorage.getItem("user")))
-          // this.$emit("userInfo")
+          this.$emit("userInfo")
         } else {
           this.$message({
             type: "error",
             message: res.msg
           })
         }
-        // let str = sessionStorage.getItem("user") || "{}"
-        // console.log(str)
-        // this.form = str
-        this.Dialoguser = false
-        // this.load()
+        router.push("/")
       })
+    },
+    cancel(){
+      this.outerVisible = false
+      this.innerVisible = false
     }
 
   }
